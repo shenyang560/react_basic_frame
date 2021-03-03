@@ -1,10 +1,11 @@
 import React from 'react'
 import RouterMap from './routerMap'
 import {HashRouter,Route,Switch} from 'react-router-dom'
-//import MediaQuery from "react-responsive";
-//import {MediaQueryWidthMin} from "../components/MediaQueryWidth";
 import SamePart_head from "../../pages/samePart/samePart_head";
 import Error from '../../pages/404/index'
+//https://www.npmjs.com/package/react-animated-router/v/0.1.11  动画组件参考文档
+import AnimatedRouter from 'react-animated-router'; //导入我们的的AnimatedRouter组件
+import 'react-animated-router/animate.css'; //导入默认的切换动画样式，如果需要其它切换样式，可以拷贝一份，写入自己的动画样式定义文件再引用
 class RouterIndex extends React.Component{
     componentDidMount() {}
     render(){
@@ -20,13 +21,13 @@ class RouterIndex extends React.Component{
                                return <Route key={index} path={item.path}>
                                    {/* SamePart_head 通用页面组件 */}
                                    <SamePart_head>
-                                       <Switch>
+                                       <AnimatedRouter timeout={2000}>
                                            {item.children.map((item1,index1)=>{
                                                return  <Route exact key={index1} path={item1.path} component={item1.component}/>
                                            })}
                                            {/*匹配不到路由的时候跳转到404*/}
                                            <Route component={Error} />
-                                       </Switch>
+                                       </AnimatedRouter>
                                    </SamePart_head>
                                </Route>
                            }else {
