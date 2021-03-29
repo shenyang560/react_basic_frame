@@ -21,7 +21,7 @@ class RouterIndex extends React.Component{
                                return <Route key={index} path={item.path}>
                                    {/* SamePart_head 通用页面组件 */}
                                    <SamePart_head>
-                                       <AnimatedRouter timeout={2000}>
+                                       <AnimatedRouter >
                                            {item.children.map((item1,index1)=>{
                                                return  <Route exact key={index1} path={item1.path} component={item1.component}/>
                                            })}

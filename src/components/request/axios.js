@@ -44,7 +44,7 @@ axios.interceptors.request.use(
  */
 axios.interceptors.response.use(
     (response) => {
-        if(response.status===200 || response.status===201){
+        if(response.status < 300){
             return response.data;
         }
     },
@@ -80,9 +80,9 @@ let outFF = {
      * @returns {Promise}
      */
 
-    post(url, data) {
+    post(url, data ,config) {
         return new Promise((resolve, reject) => {
-            axios.post(url, data).then(
+            axios.post(url, data ,config).then(
                 (response) => {
                     //关闭进度条
                     resolve(response);
@@ -144,18 +144,33 @@ function msag(err) {
     if (err && err.response) {
         switch (err.response.status) {
             case 400:
-                message.error(err.response.data.non_field_errors);
+                for (let key in  err.response.data) {
+                    if(typeof err.response.data[key]==="string"){
+                        message.error(err.response.data[key]);
+                    }else {
+                        err.response.data[key].map((item,index)=>{
+                            message.error(item);
+                            return item
+                        })
+
+                    }
+                }
                 break;
             case 401:
                 message.error("未授权，请登录");
+                window.location.hash='#/login';
                 break;
 
             case 403:
-                message.error("拒绝访问");
+                for (let key in  err.response.data) {
+                    message.error(err.response.data[key]);
+                }
                 break;
 
             case 404:
-                message.error("请求地址出错");
+                for (let key in  err.response.data) {
+                    message.error(err.response.data[key]);
+                }
                 break;
 
             case 408:
